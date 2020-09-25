@@ -24,7 +24,8 @@ But it should look like this:
 
 This is what I ended up doing:
 
-```@row = []
+```
+@row = []
 
       params[:planner][:row].each do |item|
         @row << item.strip
@@ -37,7 +38,8 @@ This is what I ended up doing:
       end
 
       params[:planner][:row] << @row
-      @table.update(params[:planner])```
+      @table.update(params[:planner])
+```
 
 I have a row instance variable equal to an empty array and then an iteration that grabs the params which looks like this: 
 
