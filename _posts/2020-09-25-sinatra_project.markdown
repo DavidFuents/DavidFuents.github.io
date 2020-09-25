@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Sinatra Project"
-date:       2020-09-25 20:15:22 +0000
+date:       2020-09-25 16:15:23 -0400
 permalink:  sinatra_project
 ---
 
@@ -22,9 +22,9 @@ But it should look like this:
 
 ```<Planner:0x00007fda706aa610 id: 2, title: "test", heading: ["test", " test"], row: [["heading"]], user_id: "1", created_at: 2020-09-25 20:08:52 UTC, updated_at: 2020-09-25 20:08:52 UTC>```
 
-So this is what I ended up doing:
+This is what I ended up doing:
 
-``` @row = []
+```@row = []
 
       params[:planner][:row].each do |item|
         @row << item.strip
@@ -38,3 +38,21 @@ So this is what I ended up doing:
 
       params[:planner][:row] << @row
       @table.update(params[:planner])```
+
+I have a row instance variable equal to an empty array and then an iteration that grabs the params which looks like this: 
+
+``` {"planner"=>{"row"=>["Hello", "Hello"]}, "id"=>"2"}```
+
+So that iteration goes to the row key which has an array as its value then grabs each thing in it and adds it to our @row. Then we clear the value of row in the params. After that we want to grab whatever rows already exist inside our table object if any and add it into our params so that those load before our new row we made. Finally we add our @row array back into the params which now looks like:
+
+```{"planner"=>{"row"=>[["Hello", "Hello"]]}, "id"=>"2"}``` 
+
+We are adding it back to the params because params is a hash and when you use the #update method it only takes in a hash. So now when we update our Planner object it looks like this:
+
+```#<Planner:0x00007fda706aa610 id: 2, title: "test", heading: ["test", " test"], row: [["Hello", "Hello"]], user_id: "1", created_at: 2020-09-25 20:08:52 UTC, updated_at: 2020-09-25 20:26:19 UTC>``` 
+
+Which is what I wanted a nested array. So now when we want to display the planner we can just iterate through each heading and row. 
+
+This project was really fun to make and there are a few things I want to add to it at a later time but for now I am happy with the way it came out. 
+
+You can check it out here: https://sinatra-planners.herokuapp.com/
